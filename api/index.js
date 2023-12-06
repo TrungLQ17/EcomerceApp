@@ -13,10 +13,13 @@ app.use(bodyParser.json());
 
 const port = 8000;
 const ipAddress = "192.168.137.81";
+const jwt = require("jsonwebtoken");
+
 
 app.listen(port, ipAddress, () => {
   console.log(`Server is running on http://${ipAddress}:${port}`);
 });
+
 
 
 mongoose.connect("mongodb+srv://Letuongvi:1222029260@cluster0.htwzbqp.mongodb.net/", {
@@ -32,7 +35,6 @@ mongoose.connect("mongodb+srv://Letuongvi:1222029260@cluster0.htwzbqp.mongodb.ne
   });
   
   // ... Các endpoint và logic xử lý khác của bạn ở dưới đây ...
-  
 
 
     const User = require("./models/user");
