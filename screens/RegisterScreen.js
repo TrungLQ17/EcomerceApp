@@ -28,8 +28,7 @@ const RegisterScreen = () => {
             password: password,
         };
         // send a POST  request to the backend API to register the user
-        axios
-            .post("http://localhost:8000/register", user)
+        axios.post("http://192.168.137.81:8000/register", user)
             .then((response) => {
                 console.log(response);
                 Alert.alert(
