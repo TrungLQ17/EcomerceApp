@@ -13,22 +13,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const jwt = require("jsonwebtoken");
-app.listen(port, () => {
-    console.log("Server is running on port 8000");
+// app.listen(port, () => {
+//     console.log("Server is running on port 8000");
+// });
+
+const ipAddress = "192.168.221.1";
+
+app.listen(port, ipAddress, () => {
+  console.log(`Server is running on http://${ipAddress}:${port}`);
 });
-
-
+mongoose.connect("mongodb+srv://trunglequanghz:trung@cluster0.bixb89z.mongodb.net/", {
+    //useNewUrlParser: true,
+    //useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.log("Error connecting to MongoDB", err);
+  });
 mongoose
-    .connect("mongodb+srv://trunglequanghz:trung@cluster0.bixb89z.mongodb.net/", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => {
-        console.log("Connected to MongoDB");
-    })
-    .catch((err) => {
-        console.log("Error connecting to MongoDb", err);
-    });
+
 
     const User = require("./models/user");
     const Order = require("./models/order");
