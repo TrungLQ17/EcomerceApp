@@ -5,26 +5,26 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
 const app = express();
-const port = 8000;
 const cors = require("cors");
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+const port = 8000;
+const ipAddress = "192.168.137.81";
 const jwt = require("jsonwebtoken");
-// app.listen(port, () => {
-//     console.log("Server is running on port 8000");
-// });
 
-const ipAddress = "192.168.221.1";
 
 app.listen(port, ipAddress, () => {
   console.log(`Server is running on http://${ipAddress}:${port}`);
 });
-mongoose.connect("mongodb+srv://trunglequanghz:trung@cluster0.bixb89z.mongodb.net/", {
-    //useNewUrlParser: true,
-    //useUnifiedTopology: true,
+
+
+
+mongoose.connect("mongodb+srv://Letuongvi:1222029260@cluster0.htwzbqp.mongodb.net/", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
     serverSelectionTimeoutMS: 5000,
   })
   .then(() => {
@@ -33,7 +33,8 @@ mongoose.connect("mongodb+srv://trunglequanghz:trung@cluster0.bixb89z.mongodb.ne
   .catch((err) => {
     console.log("Error connecting to MongoDB", err);
   });
-mongoose
+  
+  // ... Các endpoint và logic xử lý khác của bạn ở dưới đây ...
 
 
     const User = require("./models/user");
@@ -45,8 +46,8 @@ mongoose
         // Configure the email service or SMTP details here
         service: "gmail",
         auth: {
-          user: "sujananand0@gmail.com",
-          pass: "wkkjjprzkqxtboju",
+          user: "20522148@gm.uit.edu.vn",
+          pass: "1222029260",
         },
       });
     
@@ -114,7 +115,7 @@ mongoose
         //Find the user witht the given verification token
         const user = await User.findOne({ verificationToken: token });
         if (!user) {
-          return res.status(404).json({ message: "Invalid verification token" });
+          return res.status(500).json({ message: "Invalid verification token" });
         }
     
         //Mark the user as verified
