@@ -1,28 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ModalPortal } from 'react-native-modals';
+import { UserContext } from './UserContext';
 import StackNavigator from './navigation/StackNavigator';
-//import store from './store';
-//import { Provider } from 'react-redux';
-import { ModalPortal } from "react-native-modals";
-import { UserContext } from "./UserContext";
+import SplashScreenComponent from './screens/SplashScreen'; // Import từ file SplashScreen.js
 
-export default function App() {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleSkip = () => {
+    setIsLoading(false); // Kết thúc màn hình SplashScreen khi người dùng bấm "Skip"
+  };
+
+
   return (
-    <>
-      {/* <Provider store={store}>
+    <UserContext>
+      {isLoading ? (
+        <SplashScreenComponent onSkip={handleSkip} />
+      ) : (
         <StackNavigator />
-      </Provider> */}
-      <UserContext>
-        <StackNavigator />
-        <ModalPortal />
-      </UserContext>
-    </>
+      )}
+      <ModalPortal />
+    </UserContext>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
+export default App;
