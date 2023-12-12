@@ -5,7 +5,9 @@ import {
   SafeAreaView,
   Pressable,
   Image,
+  KeyboardAvoidingView,
   TextInput,
+  Alert,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
@@ -21,7 +23,6 @@ const RegisterScreen = () => {
   const [name, setName] = useState("");
   const navigation = useNavigation();
   const [agreeTerms, setAgreeTerms] = useState(false); // State cho việc đồng ý điều khoản
-
   const toggleAgreeTerms = () => {
     setAgreeTerms((prevAgree) => !prevAgree); // Đảo ngược trạng thái khi người dùng chọn checkbox
   };
@@ -32,9 +33,9 @@ const RegisterScreen = () => {
       password: password,
     };
 
-    // send a POST request to the backend API to register the user
+    // send a POST  request to the backend API to register the user
     axios
-      .post("http://192.168.137.44:8000/register", user)
+      .post("http://192.168.137.81:8000/register", user)
       .then((response) => {
         console.log(response);
         Alert.alert(

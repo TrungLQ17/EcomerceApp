@@ -1,3 +1,5 @@
+//import React from "react";
+import * as Google from 'expo-auth-session/providers/google';
 import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
@@ -7,6 +9,7 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  Button,
   TouchableOpacity
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,11 +18,75 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import logoImage from '../assets/LogoRed.png';
 
+import * as WebBrowser from 'expo-web-browser';
+
+WebBrowser.maybeCompleteAuthSession();
+
 const LoginScreen = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberAccount, setRememberAccount] = useState(false);
   const navigation = useNavigation();
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  const [token, setToken] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: "918902758716-n4bbjmf8r4t59jegl832sr1pldsni3rs.apps.googleusercontent.com",
+    iosClientId: "918902758716-284q1mb55t6qmdepgaovm80fed00ir8e.apps.googleusercontent.com",
+    expoClientId: "918902758716-c2akb0gam2cdv5b5sgvdlmc1u30arh2d.apps.googleusercontent.com",
+  });
+
+  useEffect(() => {
+    handleEffect();
+  }, [response, token]);
+
+  async function handleEffect() {
+    const user = await getLocalUser();
+    console.log("user", user);
+    if (!user) {
+      if (response?.type === "success") {
+        getUserInfo(response.authentication.accessToken);
+        setShowCongratulations(true);
+      }
+    } else {
+      setUserInfo(user);
+      console.log("loaded locally");
+      setShowCongratulations(true);
+    }
+  }
+
+  const getLocalUser = async () => {
+    const data = await AsyncStorage.getItem("@user");
+    if (!data) return null;
+    return JSON.parse(data);
+  };
+
+  const getUserInfo = async (token) => {
+    if (!token) return;
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const user = await response.json();
+      await AsyncStorage.setItem("@user", JSON.stringify(user));
+      setUserInfo(user);
+    } catch (error) {
+      // Add your own error handler here
+    }
+  };
+
+  const closeModal = () => {
+    setShowCongratulations(false);
+    // Nếu bạn muốn hiển thị màn hình UserInfo sau khi đóng modal, thêm mã ở đây.
+  };
+  /////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     loadRememberAccount();
@@ -60,7 +127,7 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.container}>
-      <Image
+        <Image
           style={styles.logo}
           source={logoImage}
         />
@@ -108,17 +175,25 @@ const LoginScreen = () => {
         <View>
           <Text style={styles.fwith}>-------- Login with ----------</Text>
         </View>
+        <View>
+          <TouchableOpacity onPress={() => promptAsync()}>
+            <Image
+              source={require('../assets/gglogo.png')} // Thay đổi đường dẫn hình ảnh tương ứng
+              style={styles.logo}
+            />
+          </TouchableOpacity>
+        </View>
+
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.sigText}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={styles.signUpText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   screen: {
@@ -207,7 +282,14 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: "center",
     marginTop: 22,
-  }
+  },
+  logo: {
+    marginTop: 25,
+    marginBottom: 15,
+    width: 40, // Adjust the width and height to fit your logo
+    height: 40,
+  },
 });
 
 export default LoginScreen;
+
