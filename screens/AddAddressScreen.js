@@ -12,6 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { Ionicons } from "@expo/vector-icons";
 //import { UserType } from "../UserContext";
 
 const AddAddressScreen = () => {
@@ -20,25 +21,22 @@ const AddAddressScreen = () => {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 50 }}>
-            {/* thanh tìm kiếm */}
-            <View style={styles.tabSearch}>
-                <Pressable style={styles.tabSearchIcon}>
-                    <AntDesign style={{ paddingLeft: 10 }} name="search1" size={22} color="black" />
-                    <TextInput placeholder="Search product " />
+            <View style={styles.header}>
+                <Pressable style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.goBack()}>
+                    <MaterialIcons name="keyboard-arrow-left" size={25} color="#B00406" style={{ marginRight: 5 }} />
+                    <Text style={{ fontSize: 20 }}>New Addresses</Text>
                 </Pressable>
-                <Feather name="mic" size={24} color="black" />
             </View>
-
-            <View style={{ padding: 10 }}>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>Your Addresses</Text>
-                <Pressable style={styles.AddNewAdress}
+            <Text style={styles.dividing_line} />
+            <Pressable style={styles.AddNewAdress}
                 onPress={() => navigation.navigate("Add")}
-                >
-                    <Text>Add a new Address</Text>
-                    <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                </Pressable>
-            </View>
-
+            >
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 70 }}>
+                    <Ionicons name="add-circle-outline" size={24} color="#B00406" margin={10} />
+                    <Text style={{ fontSize: 16, color: "#B00406" }}>Add a new Address</Text>
+                    <MaterialIcons name="keyboard-arrow-right" size={24} color="#B00406" />
+                </View>
+            </Pressable>
         </ScrollView>
     );
 };
@@ -46,21 +44,8 @@ const AddAddressScreen = () => {
 export default AddAddressScreen;
 
 const styles = StyleSheet.create({
-    tabSearch: {
-        backgroundColor: "#00CED1",
+    header: {
         padding: 10,
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    tabSearchIcon: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginHorizontal: 7,
-        gap: 10,
-        backgroundColor: "white",
-        borderRadius: 3,
-        height: 38,
-        flex: 1,
     },
     AddNewAdress: {
         flexDirection: "row",
@@ -73,5 +58,11 @@ const styles = StyleSheet.create({
         borderRightWidth: 0,
         paddingVertical: 7,
         paddingHorizontal: 5,
-    }
+    },
+    dividing_line: {
+        height: 0.5,
+        borderColor: "lightgray",
+        borderWidth: 1,
+        marginTop: 10,
+    },
 });

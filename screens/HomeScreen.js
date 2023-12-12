@@ -11,7 +11,7 @@ import {
     ScrollView,
 } from "react-native";
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { Feather } from "@expo/vector-icons";
+//import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -26,46 +26,67 @@ import { BottomModal, SlideAnimation, ModalContent } from "react-native-modals";
 
 const HomeScreen = () => {
 
-    const listProductPortfolio = [
+    const list1ProductPortfolio = [
         {
             id: "0",
-            image: "https://m.media-amazon.com/images/I/41EcYoIZhIL._AC_SY400_.jpg",
+            image: "https://cdn-icons-png.flaticon.com/128/1000/1000662.png?ga=GA1.1.1422071810.1701969758&semt=ais",
             name: "Home",
         },
         {
             id: "1",
             image:
-                "https://m.media-amazon.com/images/G/31/img20/Events/Jup21dealsgrid/blockbuster.jpg",
+                "https://cdn-icons-png.flaticon.com/128/811/811148.png?ga=GA1.1.1422071810.1701969758&semt=ais",
             name: "Deals",
+        },
+        {
+            id: "2",
+            image:
+                "https://cdn-icons-png.flaticon.com/128/4860/4860001.png?ga=GA1.1.1422071810.1701969758&semt=ais",
+            name: "Electronics",
         },
         {
             id: "3",
             image:
-                "https://images-eu.ssl-images-amazon.com/images/I/31dXEvtxidL._AC_SX368_.jpg",
-            name: "Electronics",
+                "https://cdn-icons-png.flaticon.com/128/6350/6350852.png?ga=GA1.1.1422071810.1701969758&semt=ais",
+            name: "Mobiles",
         },
         {
             id: "4",
             image:
-                "https://m.media-amazon.com/images/G/31/img20/Events/Jup21dealsgrid/All_Icons_Template_1_icons_01.jpg",
-            name: "Mobiles",
-        },
-        {
-            id: "5",
-            image:
-                "https://m.media-amazon.com/images/G/31/img20/Events/Jup21dealsgrid/music.jpg",
+                "https://cdn-icons-png.flaticon.com/128/8539/8539214.png?ga=GA1.1.1422071810.1701969758&semt=ais",
             name: "Music",
         },
         {
-            id: "6",
-            image: "https://m.media-amazon.com/images/I/51dZ19miAbL._AC_SY350_.jpg",
+            id: "5",
+            image: "https://cdn-icons-png.flaticon.com/128/8917/8917977.png?ga=GA1.1.1422071810.1701969758&semt=ais",
+            name: "Fashion",
+        },
+    ];
+    const list2ProductPortfolio = [
+
+        {
+            id: "0",
+            image: "https://cdn-icons-png.flaticon.com/128/10086/10086538.png?ga=GA1.1.1422071810.1701969758&semt=ais",
+            name: "Fashion",
+        },
+        {
+            id: "1",
+            image: "https://cdn-icons-png.flaticon.com/128/8381/8381214.png?ga=GA1.1.1422071810.1701969758&semt=ais",
+            name: "Fashion",
+        },
+        {
+            id: "2",
+            image: "https://cdn-icons-png.flaticon.com/128/4325/4325957.png?ga=GA1.1.1422071810.1701969758&semt=ais",
             name: "Fashion",
         },
     ];
     const imagesSlider = [
-        "https://img.etimg.com/thumb/msid-93051525,width-1070,height-580,imgsize-2243475,overlay-economictimes/photo.jpg",
-        "https://images-eu.ssl-images-amazon.com/images/G/31/img22/Wireless/devjyoti/PD23/Launches/Updated_ingress1242x550_3.gif",
-        "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Books/BB/JULY/1242x550_Header-BB-Jul23.jpg",
+        "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/retail-store-facebook-shop-cover-design-template-3b90163b24d7f9c789c1be51b5a3951d_screen.jpg?ts=1700638520",
+        "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/black-friday-design-template-fd86427fe033e38b544433fb535aa9d4_screen.jpg?ts=1698383409",
+        "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/merry-christmas-design-template-fc0a5f7d85db7d397c497da226a7088e_screen.jpg?ts=1701434987",
+        "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/pink-cosmetic-store-facebook-shop-cover-design-template-c0f60562054ad1d1af934b0897bdf3d3_screen.jpg?ts=1590736715",
+        "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/cosmetic-store-discount-facebook-shop-cover-design-template-bb990e1c8f92d85d9d05f74b1abc6267_screen.jpg?ts=1590736715",
+        "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/car-rental-design-template-93cb7cfb6fff3f74819cbea6eea51320_screen.jpg?ts=1656318403",
     ];
     const deals = [
         {
@@ -197,12 +218,12 @@ const HomeScreen = () => {
     ];
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
-    const [category, setCategory] = useState("jewelery");
+    const [selectedCategory, setSelectedCategory] = useState("jewelery");
     const [items, setItems] = useState([
+        { label: "Jewelery", value: "jewelery" },
         { label: "Men's clothing", value: "men's clothing" },
-        { label: "jewelery", value: "jewelery" },
-        { label: "electronics", value: "electronics" },
-        { label: "women's clothing", value: "women's clothing" },
+        { label: "Electronics", value: "electronics" },
+        { label: "Women's clothing", value: "women's clothing" },
     ]);
     useEffect(() => {
         const fetchData = async () => {
@@ -225,146 +246,187 @@ const HomeScreen = () => {
     // console.log(cart);
     const [modalVisible, setModalVisible] = useState(false);
 
+
     return (
         <>
             <SafeAreaView style={styles.homescreen}>
                 <ScrollView>
-
-                    {/* thanh tìm kiếm */}
-                    <View style={styles.tabSearch}>
-                        <Pressable style={styles.tabSearchIcon}>
-                            <AntDesign style={{ paddingLeft: 10 }} name="search1" size={22} color="black" />
-                            <TextInput placeholder="Search product " />
-                        </Pressable>
-                        <Feather name="mic" size={24} color="black" />
-                    </View>
-
-                    {/* thanh địa chỉ */}
-                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.tabAddress}>
-                        <Ionicons name="location-outline" size={24} color="black" />
-                        <Pressable>
-                            <Text style={{ fontSize: 10, fontWeight: "500" }}>
-                                Your current address
-                            </Text>
-                        </Pressable>
-                        <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
-                    </Pressable>
-
-                    {/* danh mục sản phẩm */}
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {listProductPortfolio.map((item, index) => (
-                            <Pressable key={index} style={styles.ProductPortfolio}>
-                                <Image style={styles.ProductPortfolio_image} source={{ uri: item.image }} />
-                                <Text style={styles.ProductPortfolio_text}>  {item?.name}  </Text>
+                    <View style={styles.header}>
+                        <View style={styles.tabSearch}>
+                            <Pressable style={styles.tabSearchIcon}>
+                                <AntDesign name="search1" size={20} color="gray" marginLeft={10} />
+                                <TextInput placeholder="Search product" />
                             </Pressable>
-                        ))}
-                    </ScrollView>
+                        </View>
 
-                    {/* quảng cáo sliderbox */}
+                        <Pressable onPress={setModalVisible} style={styles.tabAddress}>
+                            <Ionicons name="location-outline" size={24} color="white" />
+                            <MaterialIcons name="keyboard-arrow-down" size={24} color="white" />
+                        </Pressable>
+                    </View>
                     <SliderBox
                         images={imagesSlider}
-                        autoPlay
+                        autoplay
                         circleLoop
-                        dotColor={"#13274F"}
+                        dotColor="#B00406"
                         inactiveDotColor="#90A4AE"
-                        ImageComponentStyle={{ width: "100%" }}
+                        ImageComponentStyle={{ width: '100%' }}
                     />
+                    <View style={{ backgroundColor: 'white' }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                {list1ProductPortfolio.map((item, index) => (
+                                    <View key={index} style={styles.productContainer}>
+                                        <View style={styles.imageContainer}>
+                                            <Image style={styles.productImage} source={{ uri: item.image }} />
+                                        </View>
+                                        <Text style={styles.iconText}>{item?.name}</Text>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                {list2ProductPortfolio.map((item, index) => (
+                                    <View key={index} style={styles.productContainer}>
+                                        <View style={styles.imageContainer}>
+                                            <Image style={styles.productImage} source={{ uri: item.image }} />
+                                        </View>
+                                        <Text style={styles.iconText}>{item?.name}</Text>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        </View>
 
-                    <Text style={styles.TitleComponents}> Trending Deals of the week </Text>
+                        <Text style={styles.dividing_line} />
 
-                    {/* sản phẩm hot-trend */}
-                    <View style={styles.TrendProduct}>
-                        {deals.map((item, index) => (
-                            <Pressable
-                                onPress={() =>
-                                    navigation.navigate("Info", {
-                                        id: item.id,
-                                        title: item.title,
-                                        price: item?.price,
-                                        carouselImages: item.carouselImages,
-                                        color: item?.color,
-                                        size: item?.size,
-                                        oldPrice: item?.oldPrice,
-                                        item: item,
-                                    })
-                                }
-                                style={styles.TrendProductBox}>
-                                <Image style={styles.TrendProductImage} source={{ uri: item?.image }} />
-                            </Pressable>
-                        ))}
-                    </View>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.TitleComponents}> RECOMMENDED FOR YOU </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.seeAllDetail}>See All Detail</Text>
+                                <MaterialIcons name="keyboard-arrow-right" size={20} color="black" style={{ marginRight: 15 }} />
+                            </View>
+                        </View>
 
-                    {/* đường phân cách */}
-                    <Text style={styles.dividing_line} />
-
-                    <Text style={styles.TitleComponents}> Today's Deals </Text>
-
-                    {/* HotDeal - Today */}
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {offers.map((item, index) => (
-                            <Pressable
-                                onPress={() =>
-                                    navigation.navigate("Info", {
-                                        id: item.id,
-                                        title: item.title,
-                                        price: item?.price,
-                                        carouselImages: item.carouselImages,
-                                        color: item?.color,
-                                        size: item?.size,
-                                        oldPrice: item?.oldPrice,
-                                        item: item,
-                                    })
-                                }
-                                style={styles.DealToday}>
-                                <Image style={styles.DealTodayImage} source={{ uri: item?.image }} />
-                                <View style={styles.DealTodayProduct}>
-                                    <Text style={styles.DealTodayText}> Upto {item?.offer} </Text>
-                                </View>
-                            </Pressable>
-                        ))}
-                    </ScrollView>
-
-                    {/* đường phân cách */}
-                    <Text style={styles.dividing_line} />
-
-                    <View
-                        style={{
-                            marginHorizontal: 10,
-                            marginTop: 20,
-                            width: "45%",
-                            marginBottom: open ? 50 : 15,
-                        }}
-                    >
-                        <DropDownPicker
-                            style={{
-                                borderColor: "#B7B7B7",
-                                height: 30,
-                                marginBottom: open ? 120 : 15,
-                            }}
-                            open={open}
-                            value={category} //genderValue
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setCategory}
-                            setItems={setItems}
-                            placeholder="choose category"
-                            placeholderStyle={styles.placeholderStyles}
-                            onOpen={onGenderOpen}
-                            // onChangeValue={onChange}
-                            zIndex={3000}
-                            zIndexInverse={1000}
-                        />
-                    </View>
+                        {/* sản phẩm hot-trend */}
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <View style={styles.TrendProduct}>
+                                {deals.map((item, index) => (
+                                    <Pressable
+                                        key={index}
+                                        onPress={() =>
+                                            navigation.navigate("Info", {
+                                                id: item.id,
+                                                title: item.title,
+                                                price: item?.price,
+                                                carouselImages: item.carouselImages,
+                                                color: item?.color,
+                                                size: item?.size,
+                                                oldPrice: item?.oldPrice,
+                                                item: item,
+                                            })
+                                        }
+                                        style={styles.TrendProductBox}
+                                    >
+                                        <View>
+                                            <Image style={styles.TrendProductImage} source={{ uri: item?.image }} />
+                                            <Text style={styles.productText}>
+                                                {item?.title.length > 35 ? item.title.substring(0, 35) + "..." : item.title}
+                                            </Text>
+                                            <View><Text style={styles.TextPrice}>  đ{item?.price} </Text></View>
+                                        </View>
+                                    </Pressable>
+                                ))}
+                            </View>
+                        </ScrollView>
 
 
-                    <View style={styles.ListProduct}>
-                        {products
-                            ?.filter((item) => item.category === category)
-                            .map((item, index) => (
-                                <ProductItem item={item} key={index} />
+                        {/* đường phân cách */}
+                        <Text style={styles.dividing_line} />
+
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.TitleComponents}> FLASH SALE </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.seeAllDetail}>See All Detail</Text>
+                                <MaterialIcons name="keyboard-arrow-right" size={20} color="black" style={{ marginRight: 15 }} />
+                            </View>
+
+                        </View>
+
+                        {/* HotDeal - Today */}
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            {offers.map((item, index) => (
+                                <Pressable
+                                    onPress={() =>
+                                        navigation.navigate("Info", {
+                                            id: item.id,
+                                            title: item.title,
+                                            price: item?.price,
+                                            carouselImages: item.carouselImages,
+                                            color: item?.color,
+                                            size: item?.size,
+                                            oldPrice: item?.oldPrice,
+                                            item: item,
+                                        })
+                                    }
+                                    style={styles.DealToday}>
+                                    <Image style={styles.DealTodayImage} source={{ uri: item?.image }} />
+                                    <View><Text style={styles.price}>  đ{item?.price} </Text></View>
+                                    <View style={styles.DealTodayProduct}>
+                                        <Text style={styles.DealTodayText}> Upto {item?.offer} </Text>
+                                    </View>
+                                </Pressable>
                             ))}
-                    </View>
+                        </ScrollView>
 
+                        {/* đường phân cách */}
+                        <Text style={styles.dividing_line} />
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.TitleComponents}> DAILY DISCOVER </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.seeAllDetail}>See All Detail</Text>
+                                <MaterialIcons name="keyboard-arrow-right" size={20} color="black" style={{ marginRight: 15 }} />
+                            </View>
+                        </View>
+                        <View>
+                            <View style={{ marginHorizontal: 10, marginTop: 20, marginBottom: 20 }}>
+                                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                    {items.map((item) => (
+                                        <Pressable
+                                            key={item.value}
+                                            style={[
+                                                styles.categoryOption,
+                                                selectedCategory === item.value && styles.selectedCategoryOption,
+                                            ]}
+                                            onPress={() => setSelectedCategory(item.value)}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.categoryText,
+                                                    selectedCategory === item.value && styles.selectedCategoryText,
+                                                ]}
+                                            >
+                                                {item.label}
+                                            </Text>
+                                        </Pressable>
+                                    ))}
+                                </ScrollView>
+                            </View>
+
+                            <View style={styles.ListProduct}>
+                                {products
+                                    ?.filter((item) => item.category === selectedCategory)
+                                    .map((item, index) => (
+                                        <ProductItem
+                                            item={item}
+                                            key={index}
+                                            style={StyleSheet.flatten([styles.customProductItem, item.additionalStyles])}
+                                        />
+                                    ))}
+                            </View>
+                        </View>
+
+                    </View>
                 </ScrollView>
             </SafeAreaView>
             <BottomModal
@@ -383,10 +445,10 @@ const HomeScreen = () => {
                 <ModalContent style={styles.ModalContent_location}>
                     <View style={{ marginBottom: 8 }}>
                         <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                            Choose your Location
+                            My Addresses
                         </Text>
 
-                        <Text style={{ marginTop: 5, fontSize: 16, color: "gray" }}>
+                        <Text style={{ marginTop: 5, fontSize: 15, color: "gray" }}>
                             Select a delivery location to see product availabilty and delivery
                             options
                         </Text>
@@ -412,7 +474,6 @@ const HomeScreen = () => {
                                 numberOfLines={1}
                                 style={{ width: 130, fontSize: 13, textAlign: "center" }}
                             >
-                                {/* {item?.houseNo},{item?.landmark} */}
                             </Text>
                             <Text
                                 numberOfLines={1}
@@ -424,15 +485,15 @@ const HomeScreen = () => {
                                 numberOfLines={1}
                                 style={{ width: 130, fontSize: 13, textAlign: "center" }}
                             >
-                                India, Bangalore
+                                VietNam, HoChiMinh City
                             </Text>
                         </Pressable>
 
                         <Pressable style={styles.location_image2}
-                        // onPress={() => {
-                        //     setModalVisible(false);
-                        //     navigation.navigate("Address");
-                        // }}
+                            onPress={() => {
+                                setModalVisible(false);
+                                navigation.navigate("Address");
+                            }}
                         >
                             <Text style={{ textAlign: "center", color: "#0066b2", fontWeight: "500", }}>
                                 Add an Address or pick-up point
@@ -442,7 +503,7 @@ const HomeScreen = () => {
                     <View style={styles.location_list_view}>
                         <View style={styles.location_list_view_1}>
                             <Entypo name="location-pin" size={22} color="#0066b2" />
-                            <Text style={styles.location_list_view_1text}> Enter an Indian pincode</Text>
+                            <Text style={styles.location_list_view_1text}> Enter an Viet Nam pincode</Text>
                         </View>
 
                         <View style={styles.location_list_view_1}>
@@ -452,7 +513,7 @@ const HomeScreen = () => {
 
                         <View style={styles.location_list_view_1}>
                             <AntDesign name="earth" size={22} color="#0066b2" />
-                            <Text style={styles.location_list_view_1text}> Deliver outside India </Text>
+                            <Text style={styles.location_list_view_1text}> Deliver outside Viet Nam </Text>
                         </View>
                     </View>
                 </ModalContent>
@@ -467,13 +528,19 @@ const styles = StyleSheet.create({
     homescreen: {
         paddingTop: Platform.OS === "android" ? 40 : 0,
         flex: 1,
-        backgroundColor: "white"
+        backgroundColor: "#B00406"
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginRight: 60,
+        marginBottom: 10,
     },
     tabSearch: {
-        backgroundColor: "#00CED1",
-        padding: 10,
         flexDirection: "row",
         alignItems: "center",
+        marginLeft: 10,
     },
     tabSearchIcon: {
         flexDirection: "row",
@@ -481,77 +548,132 @@ const styles = StyleSheet.create({
         marginHorizontal: 7,
         gap: 10,
         backgroundColor: "white",
-        borderRadius: 3,
+        borderRadius: 6,
         height: 38,
         flex: 1,
     },
     tabAddress: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 5,
-        padding: 10,
-        backgroundColor: "#AFEEEE",
-    },
-    ProductPortfolio: {
-        margin: 10,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    ProductPortfolio_image: {
-        width: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: "#B00406",
         height: 50,
-        resizeMode: "contain"
+
     },
-    ProductPortfolio_text: {
-        textAlign: "center",
+    productContainer: {
+        marginTop: 15,
+        alignItems: 'center',
+        margin: 10,
+        width: 80,
+        height: 60,
+
+    },
+    imageContainer: {
+        borderWidth: 1,
+        borderColor: 'lightgray',
+        padding: 5,
+        borderRadius: 10,
+    },
+    productImage: {
+        width: 30,
+        height: 30,
+        resizeMode: 'cover',
+        borderWidth: 1,
+
+    },
+    iconText: {
         fontSize: 12,
-        fontWeight: "500",
-        marginTop: 5,
+    },
+    productText: {
+        fontSize: 14,
+        margin: 10,
+    },
+
+    row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     TitleComponents: {
         padding: 10,
-        fontSize: 18,
-        fontWeight: "bold"
+        fontSize: 17,
+        fontWeight: "bold",
+        color: "#B00406",
+    },
+    seeAllDetail: {
+        color: "#979797",
+
     },
     TrendProduct: {
         flexDirection: "row",
         alignItems: "center",
         flexWrap: "wrap",
+
     },
     TrendProductBox: {
-        marginVertical: 10,
+        justifyContent: 'space-between',
         flexDirection: "row",
         alignItems: "center",
+        borderWidth: 0.7,
+        margin: 5,
+        marginLeft: 13,
+        borderRadius: 10,
+        width: 170,
+        height: 250,
+        borderColor: "lightgray",
     },
     TrendProductImage: {
-        width: 177,
-        height: 180,
-        resizeMode: "contain"
+        width: 150,
+        height: 150,
+        resizeMode: "contain",
+
+    },
+    TextPrice: {
+        margin: 5,
+        fontWeight: "bold",
+        color: "#B00406",
+    },
+    price: {
+        fontWeight: "bold",
+        color: "#B00406",
     },
     dividing_line: {
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 2,
+        height: 8,
+        borderColor: "#F5F4F4",
+        borderWidth: 7,
         marginTop: 15,
     },
     DealToday: {
         marginVertical: 10,
         alignItems: "center",
         justifyContent: "center",
+        borderWidth: 0.7,
+        margin: 5,
+        marginLeft: 13,
+        borderRadius: 10,
+        width: 170,
+        height: 220,
+        borderColor: "lightgray",
     },
     DealTodayImage: {
-        width: 140,
-        height: 140,
-        resizeMode: "contain"
+        width: 120,
+        height: 120,
+        resizeMode: "contain",
+        marginBottom: 5,
     },
     DealTodayProduct: {
-        backgroundColor: "#E31837",
+        backgroundColor: "#B00406",
         paddingVertical: 5,
         width: 130,
         justifyContent: "center",
         alignItems: "center",
         marginTop: 10,
         borderRadius: 4
+
     },
     DealTodayText: {
         textAlign: "center",
@@ -559,11 +681,42 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: "bold",
     },
+    categoryOption: {
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginRight: 10,
+        borderRadius: 40,
+        backgroundColor: "#E9E7E7",
+        borderColor: "transparent",
+        borderWidth: 1,
+    },
+    selectedCategoryOption: {
+        backgroundColor: "#B00406",
+        borderColor: "#B00406",
+    },
+    categoryText: {
+        fontWeight: "bold",
+        color: "black",
+    },
+    selectedCategoryText: {
+        color: "white",
+    },
     ListProduct: {
         flexDirection: "row",
         alignItems: "center",
         flexWrap: "wrap",
+        marginBottom: 5,
+
     },
+    /*     customProductItem:{
+            borderWidth: 1,
+            margin: 5,
+            marginRight: 8,
+            borderRadius: 10,
+            width: 170,
+            height:220,
+            borderColor: "lightgray",
+        }, */
     ModalContent_location: {
         width: "100%",
         height: 400
@@ -604,5 +757,5 @@ const styles = StyleSheet.create({
     location_list_view_1text: {
         color: "#0066b2",
         fontWeight: "400"
-    }
+    },
 });
