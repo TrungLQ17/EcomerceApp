@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const port = 8000;
-const ipAddress = "192.168.137.81";
+const ipAddress = "192.168.1.10";
 const jwt = require("jsonwebtoken");
 
 
@@ -163,28 +163,28 @@ mongoose.connect("mongodb+srv://Letuongvi:1222029260@cluster0.htwzbqp.mongodb.ne
       }
     });
     
-    //endpoint to store a new address to the backend
     app.post("/addresses", async (req, res) => {
       try {
         const { userId, address } = req.body;
     
-        //find the user by the Userid
+        // Find the user by the Userid
         const user = await User.findById(userId);
         if (!user) {
           return res.status(404).json({ message: "User not found" });
         }
     
-        //add the new address to the user's addresses array
+        // Add the new address to the user's addresses array
         user.addresses.push(address);
     
-        //save the updated user in te backend
+        // Save the updated user in the backend
         await user.save();
     
-        res.status(200).json({ message: "Address created Successfully" });
+        res.status(200).json({ message: "Address created successfully" });
       } catch (error) {
-        res.status(500).json({ message: "Error addding address" });
+        res.status(500).json({ message: "Error adding address" });
       }
     });
+    
     
     //endpoint to get all the addresses of a particular user
     app.get("/addresses/:userId", async (req, res) => {
@@ -202,7 +202,8 @@ mongoose.connect("mongodb+srv://Letuongvi:1222029260@cluster0.htwzbqp.mongodb.ne
         res.status(500).json({ message: "Error retrieveing the addresses" });
       }
     });
-    
+  
+            
     //endpoint to store all the orders
     app.post("/orders", async (req, res) => {
       try {

@@ -21,14 +21,10 @@ const userSchema = new mongoose.Schema({
   verificationToken: String,
   addresses: [
     {
-      name: String,
-      mobileNo: String,
-      houseNo: String,
-      street: String,
-      landmark: String,
+      fullName: String,
+      phoneNumber: String,
+      addressLine1: String,
       city: String,
-      country: String,
-      postalCode: String,
     },
   ],
   orders: [

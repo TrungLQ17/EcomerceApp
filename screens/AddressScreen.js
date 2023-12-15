@@ -9,54 +9,71 @@ import {
 } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//import jwt_decode from "jwt-decode"
-//import { UserType } from "../UserContext";
+import "core-js/stable/atob";
+import {jwtDecode} from 'jwt-decode';
+import { UserType } from "../UserContext";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+
+
 const AddressScreen = () => {
     const navigation = useNavigation();
-    const [name, setName] = useState("");
-    const [mobileNo, setMobileNo] = useState("");
-    const [houseNo, setHouseNo] = useState("");
-    const [street, setStreet] = useState("");
-    const [landmark, setLandmark] = useState("");
-    const [postalCode, setPostalCode] = useState("");
-    // const {userId,setUserId} = useContext(UserType)
-    // useEffect(() => {
-    //   const fetchUser = async() => {
-    //       const token = await AsyncStorage.getItem("authToken");
-    //       const decodedToken = jwt_decode(token);
-    //       const userId = decodedToken.userId;
-    //       setUserId(userId)
-    //   }
+    const [fullName, setName] = useState("");
+    const [phoneNumber, setMobileNo] = useState("");
+    const [addressLine1, setHouseNo] = useState("");
+    const [city, setCity] = useState("");
+     const {userId,setUserId} = useContext(UserType)
 
-    //   fetchUser();
-    // },[]);
-    // console.log(userId)
-    // const handleAddAddress = () => {
-    //     const address = {
-    //         name,
-    //         mobileNo,
-    //         houseNo,
-    //         city,
-    //     }
+     useEffect(() => {
+       const fetchUser = async() => {
+        const token = await AsyncStorage.getItem("authToken");
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId;
+        setUserId(userId);
+       }
 
-    //     axios.post("http://localhost:8000/addresses",{userId,address}).then((response) => {
-    //         Alert.alert("Success","Addresses added successfully");
-    //         setName("");
-    //         setMobileNo("");
-    //         setHouseNo("");
-    //         setCity("");
+       fetchUser();
+     },[]);
 
-    //         setTimeout(() => {
-    //           navigation.goBack();
-    //         },500)
-    //     }).catch((error) => {
-    //         Alert.alert("Error","Failed to add address")
-    //         console.log("error",error)
-    //     })
-    // }
+     console.log(userId)
+
+const handleAddAddress = async () => {
+  const addressData = {
+    userId,
+    address: {
+      fullName,
+      phoneNumber,
+      addressLine1,
+      city,
+    }
+  };
+
+        try {
+            const token = await AsyncStorage.getItem("authToken");
+            const response = await axios.post("http://192.168.1.10:8000/addresses", addressData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Nếu response status là 200 hoặc thành công, xử lý thành công ở đây
+            Alert.alert("Success", "Address added successfully");
+            setName("");
+            setMobileNo("");
+            setHouseNo("");
+            setCity("");
+            
+            setTimeout(() => {
+                navigation.goBack();
+            }, 500);
+        } catch (error) {
+            // Xử lý lỗi ở đây
+            Alert.alert("Error", "Failed to add address");
+            console.error("Error adding address", error);
+        }
+    };
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
@@ -69,11 +86,15 @@ const AddressScreen = () => {
             <View style={styles.formContainer}>
                 <Text style={styles.title}>Contact</Text>
                 <TextInput
+                    value ={fullName}
+                    onChangeText={(text) => setName (text)}
                     style={styles.inputField}
                     placeholderTextColor={"gray"}
                     placeholder="Full Name"
                 />
                 <TextInput
+                value ={phoneNumber}
+                onChangeText={(text) => setMobileNo (text)}
                     style={styles.inputField}
                     placeholderTextColor={"gray"}
                     placeholder="Phone Number"
@@ -81,17 +102,23 @@ const AddressScreen = () => {
 
                 <Text style={styles.title}>Address</Text>
                 <TextInput
+                value ={addressLine1}
+                onChangeText={(text) => setHouseNo (text)}
                     style={styles.inputField}
                     placeholderTextColor={"gray"}
                     placeholder="City, District, Ward"
                 />
                 <TextInput
+                value ={city}
+                onChangeText={(text) => setCity (text)}
                     style={styles.inputField}
                     placeholderTextColor={"gray"}
                     placeholder="Street Name, Building, House No."
                 />
 
-                <Pressable style={styles.addButton}>
+                <Pressable
+                onPress={handleAddAddress}
+                 style={styles.addButton}>
                     <Text style={styles.addButtonText}>Add Address</Text>
                 </Pressable>
             </View>

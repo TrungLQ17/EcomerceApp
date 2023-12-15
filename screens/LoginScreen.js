@@ -10,6 +10,7 @@ import {
   Pressable,
   StyleSheet,
   Button,
+  Alert,
   TouchableOpacity
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,6 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import logoImage from '../assets/LogoRed.png';
+import axios from "axios";
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -28,6 +30,46 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [rememberAccount, setRememberAccount] = useState(false);
   const navigation = useNavigation();
+// Thêm một state mới để kiểm soát việc chuyển hướng
+const [canRedirect, setCanRedirect] = useState(false);
+
+useEffect(() => {
+  const checkLoginStatus = async () => {
+    try {
+      const token = await AsyncStorage.getItem("authToken");
+
+      if (token && canRedirect) {
+        navigation.replace("Main");
+      }
+    } catch (err) {
+      console.log("error message", err);
+    }
+  };
+  checkLoginStatus();
+}, [canRedirect]); // Thêm canRedirect vào dependencies của useEffect
+
+// Cập nhật handleLogin để thiết lập canRedirect thành true khi người dùng nhập email và password
+const handleLogin = () => {
+  const user = {
+    email: email,
+    password: password,
+  };
+
+  axios
+    .post("http://192.168.1.10:8000/login", user)
+    .then((response) => {
+      console.log(response);
+      const token = response.data.token;
+      AsyncStorage.setItem("authToken", token);
+      // Thiết lập canRedirect thành true sau khi đăng nhập thành công
+      setCanRedirect(true);
+      navigation.replace("Main");
+    })
+    .catch((error) => {
+      Alert.alert("Login Error", "Invalid Email");
+      console.log(error);
+    });
+};
 
   //////////////////////////////////////////////////////////////////////////////////////////
   const [token, setToken] = useState("");
@@ -124,6 +166,7 @@ const LoginScreen = () => {
     setRememberAccount((prevState) => !prevState);
   };
 
+  
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.container}>
@@ -167,7 +210,7 @@ const LoginScreen = () => {
           </View>
         </View>
         <Pressable
-          onPress={() => navigation.navigate("Main")}
+          onPress={handleLogin}
           style={styles.loginButton}
         >
           <Text style={styles.loginText}>Login</Text>
